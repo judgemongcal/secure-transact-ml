@@ -1,12 +1,19 @@
 import pandas as pd
 import asyncio
 from fastapi import FastAPI, WebSocket
+import kagglehub
+from kagglehub import KaggleDatasetAdapter
+
 
 app = FastAPI()
 
+file_path = "credit_card_transactions.csv"
 
-df = pd.read_csv("data/transactions.csv")
+df = kagglehub.load_dataset(KaggleDatasetAdapter.PANDAS, 
+                            "priyamchoksi/credit-card-transactions-dataset",
+                            file_path)
 
+print(df.head())
 async def root():
     return {"message": "WebSocket server is running. Connect to /ws/transactions"}
 
