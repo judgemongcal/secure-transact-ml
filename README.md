@@ -1,2 +1,2 @@
-# court-iq
- CourtIQ is an ML-powered NBA Player Similarity & Career Trajectory Finder
+# secure-transact-ml
+ Secure Transact ML is a fraud detection project.
