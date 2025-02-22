@@ -1,0 +1,5 @@
+# Ignore Kaggle API credentials
+.kaggle/
+
+# Ignore environment variables
+.env
