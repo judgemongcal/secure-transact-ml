@@ -21,13 +21,21 @@ async def root():
 
 async def stream_txns(websocket: WebSocket):
     await websocket.accept()
+    batch_size = 100
+    batch = []
 
     # Stream data row by row
     for _, row in df.iterrows():
         txn_data = row.to_dict();
-        await websocket.send_json(txn_data)
+        batch.append(txn_data)
 
+        if(len(batch)>= batch_size):
+            await websocket.send_json(batch)
+            batch = []
 
         await asyncio.sleep(1)
 
+    if batch:
+        await websocket.send_json(batch)
+        
     await websocket.close()
