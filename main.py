@@ -3,6 +3,7 @@ import asyncio
 from fastapi import FastAPI, WebSocket
 import kagglehub
 from kagglehub import KaggleDatasetAdapter
+from kafka.producer import send_to_kafka
 
 
 app = FastAPI()
@@ -30,12 +31,14 @@ async def stream_txns(websocket: WebSocket):
         batch.append(txn_data)
 
         if(len(batch)>= batch_size):
-            await websocket.send_json(batch)
+            # await websocket.send_json(batch) 
+            send_to_kafka("transactions", str(batch))
             batch = []
 
         await asyncio.sleep(1)
 
     if batch:
-        await websocket.send_json(batch)
+        # await websocket.send_json(batch)
+        send_to_kafka("transactions", str(batch))
         
     await websocket.close()
