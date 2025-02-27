@@ -32,6 +32,7 @@ async def stream_txns(websocket: WebSocket):
 
         if(len(batch)>= batch_size):
             # await websocket.send_json(batch) 
+            print(f"Sending batch of {len(batch)} transactions to Kafka..")
             send_to_kafka("transactions", str(batch))
             batch = []
 
@@ -42,3 +43,4 @@ async def stream_txns(websocket: WebSocket):
         send_to_kafka("transactions", str(batch))
         
     await websocket.close()
+

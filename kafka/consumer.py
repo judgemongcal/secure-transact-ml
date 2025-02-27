@@ -3,7 +3,8 @@ from confluent_kafka import Consumer
 KAFKA_CONFIG ={
     'bootstrap.servers': 'localhost:9092',
     'group.id': 'transaction-consumer-group',
-    'auto.offset.reset': 'earliest'
+    'auto.offset.reset': 'earliest',
+    'session.timeout.ms': 120000
 }
 
 consumer = Consumer(KAFKA_CONFIG)
