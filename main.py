@@ -24,7 +24,7 @@ async def root():
 # async def stream_txns(websocket: WebSocket):
 async def stream_txns():
     # await websocket.accept()
-    batch_size = 100
+    batch_size = 1000
     batch = []
 
     # Stream data row by row
@@ -38,7 +38,7 @@ async def stream_txns():
             send_to_kafka("transactions", str(batch))
             batch = []
 
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.1)
 
     if batch:
         # await websocket.send_json(batch)
