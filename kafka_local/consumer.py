@@ -4,7 +4,9 @@ KAFKA_CONFIG ={
     'bootstrap.servers': 'localhost:9092',
     'group.id': 'transaction-consumer-group',
     'auto.offset.reset': 'earliest',
-    'session.timeout.ms': 120000
+    'enable.auto.commit': False,
+    'session.timeout.ms': 120000,
+    'heartbeat.interval.ms': 5000
 }
 
 consumer = Consumer(KAFKA_CONFIG)
@@ -24,5 +26,5 @@ def consume_messages():
             continue;
 
         print(f"Received Transaction Batch: {msg.value().decode('utf-8')}")
-
+        consumer.commit()
 consume_messages()

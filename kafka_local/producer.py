@@ -19,6 +19,7 @@ def send_to_kafka(topic, message):
     '''
     Sends a message to a Kafka topic.
     '''
+        
     producer.produce(topic, message.encode('utf-8'), callback=delivery_report)
     producer.flush()
 

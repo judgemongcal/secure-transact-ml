@@ -3,7 +3,8 @@ import asyncio
 from fastapi import FastAPI, WebSocket
 import kagglehub
 from kagglehub import KaggleDatasetAdapter
-from kafka.producer import send_to_kafka
+from kafka_local.producer import send_to_kafka
+
 
 
 app = FastAPI()
@@ -18,10 +19,11 @@ print(df.head())
 async def root():
     return {"message": "WebSocket server is running. Connect to /ws/transactions"}
 
-@app.websocket("/ws/transactions")
+# @app.websocket("/ws/transactions")
 
-async def stream_txns(websocket: WebSocket):
-    await websocket.accept()
+# async def stream_txns(websocket: WebSocket):
+async def stream_txns():
+    # await websocket.accept()
     batch_size = 100
     batch = []
 
@@ -42,5 +44,9 @@ async def stream_txns(websocket: WebSocket):
         # await websocket.send_json(batch)
         send_to_kafka("transactions", str(batch))
         
-    await websocket.close()
+    # await websocket.close()
+
+@app.on_event("startup")
+async def start_producer():
+    asyncio.create_task(stream_txns())
 
