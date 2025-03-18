@@ -1,6 +1,8 @@
 from confluent_kafka import Consumer
 from dotenv import load_dotenv
 import os
+import pandas as pd
+import psycopg2
 
 load_dotenv()
 
@@ -25,10 +27,21 @@ DB_CONFIG = {
 consumer = Consumer(KAFKA_CONFIG)
 consumer.subscribe(['transactions'])
 
+def connect_postgre():
+    try:
+        conn = psycopg2.connect(**DB_CONFIG)
+        print('Connected to PostgreSQL')
+        return conn;
+    except Exception as e:
+        print(f"Error connecting to PostgreSQL: {e}")
+        return None;
+
 def consume_messages():
     '''
     Consumes messages from Kafka topic.
     '''
+
+    conn = connect_postgre()
 
     while True:
         msg = consumer.poll(1.0)
