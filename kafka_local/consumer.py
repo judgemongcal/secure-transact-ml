@@ -1,4 +1,8 @@
 from confluent_kafka import Consumer
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 KAFKA_CONFIG ={
     'bootstrap.servers': 'localhost:9092',
@@ -8,6 +12,15 @@ KAFKA_CONFIG ={
     'session.timeout.ms': 120000,
     'heartbeat.interval.ms': 5000
 }
+
+DB_CONFIG = {
+    'dbname': os.getenv('DB_NAME'),
+    'user': os.getenv('DB_USER'),
+    'password': os.getenv('DB_PASSWORD'),
+    'host': os.getenv('DB_HOST'),
+    'port': os.getenv('DB_PORT')
+}
+
 
 consumer = Consumer(KAFKA_CONFIG)
 consumer.subscribe(['transactions'])
